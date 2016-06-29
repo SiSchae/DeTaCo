@@ -1,0 +1,6 @@
+C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\bin\Debug\DeTaCo.exe.config
+C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\bin\Debug\DeTaCo.exe
+C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\bin\Debug\DeTaCo.pdb
+C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\obj\Debug\DeTaCo.csprojResolveAssemblyReference.cache
+C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\obj\Debug\DeTaCo.exe
+C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\obj\Debug\DeTaCo.pdb
