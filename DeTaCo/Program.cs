@@ -44,12 +44,37 @@ namespace DeTaCo
                     }
                 }        
             }
-            foreach (rule rule in rules)
+            for (int i = 0; i < rules.Count - 1; i++)
             {
-                rule.Output();
+                Compare(rules[i], rules[i + 1]);
             }
             
             Console.ReadLine();
+        }
+
+        public static void Compare(rule rule1, rule rule2)
+        {
+            for (int i = 0; i < rule1.actions.Count; i++)
+            {
+                if (rule1.actions[i] == rule2.actions[i] && rule1.actions[i] != "")
+                {
+                    Console.WriteLine(rule1.name + " Action: " + i + " = " + rule2.name + " Action: " + i);
+                    int differenceCount = 0;
+                    int difference = 0;
+                    for (int j = 0; j < rule1.conditions.Count; j++)
+                    {
+                        if (!rule1.conditions[j].Equals(rule2.conditions[j]))
+                        {
+                            differenceCount++;
+                            difference = j;
+                        }
+                        if (differenceCount == 1)
+                        {
+                            Console.WriteLine(differenceCount + " " + difference);
+                        }   
+                    }
+                }
+            }
         }
     }
 }
