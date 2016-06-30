@@ -12,9 +12,10 @@ namespace DeTaCo
         static void Main(string[] args)
         {
             //CSV-File Spaltenweise einlesen
-            string file = @"C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\test.csv";
+            string inputFile = @"C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\test.csv";
+            string outputFile = @"C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\testcon.csv";
 
-            StreamReader reader = new StreamReader(File.OpenRead(file));
+            StreamReader reader = new StreamReader(File.OpenRead(inputFile));
             List<rule> rules = new List<rule>();
             while (!reader.EndOfStream)
             {
@@ -46,10 +47,37 @@ namespace DeTaCo
             }
             List<rule> consolidated = Consolidate(rules);
 
-            foreach (rule rule in consolidated)
+            /*foreach (rule rule in consolidated)
             {
                 rule.Output();
+            }*/
+
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(outputFile))
+            {
+                for (int i = 0; i < consolidated.Count; i++)
+                {
+                    file.Write(consolidated[i].name + ",");
+                }
+                file.Write(Environment.NewLine);
+                for (int i = 0; i < consolidated[0].conditions.Count; i++)
+                {
+                    for (int j = 0; j < consolidated.Count; j++)
+                    {
+                        file.Write(consolidated[j].conditions[i] + ",");
+                    }
+                    file.Write(Environment.NewLine);
+                }
+                for (int i = 0; i < consolidated[0].actions.Count; i++)
+                {
+                    for (int j = 0; j < consolidated.Count; j++)
+                    {
+                        file.Write(consolidated[j].actions[i] + ",");
+                    }
+                    file.Write(Environment.NewLine);
+                }
             }
+
 
             Console.ReadLine();
         }
