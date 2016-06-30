@@ -42,19 +42,75 @@ namespace DeTaCo
                     {
                         rules[i].actions.Add(values[i]);
                     }
-                }        
+                }
             }
-            for (int i = 0; i < rules.Count - 1; i++)
+            List<rule> consolidated = Consolidate(rules);
+
+            foreach (rule rule in consolidated)
             {
-                Compare(rules[i], rules[i + 1]);
+                rule.Output();
             }
-            
+
             Console.ReadLine();
         }
 
-        public static void Compare(rule rule1, rule rule2)
+        public static List<rule> Consolidate(List<rule> list)
         {
-            for (int i = 0; i < rule1.actions.Count; i++)
+            List<rule> consolidatedRules = new List<rule>(); 
+            
+            for (int y = 0; y < list.Count; y++)
+            {
+                for (int z = y + 1; z < list.Count ; z++)
+                {
+                    if(list[y] != list[z])
+                    {
+                        rule consolidateRule = list[y];
+                        
+                        for (int i = 0; i < list[0].actions.Count; i++)
+                        {
+                            if (list[y].actions[i] == list[z].actions[i] && list[y].actions[i] != "")
+                            {
+                                int differenceCount = 0;
+                                int difference = 0;
+                                for (int j = 0; j < list[0].conditions.Count; j++)
+                                {
+                                    if (!list[y].conditions[j].Equals(list[z].conditions[j]))
+                                    {
+                                        differenceCount++;
+                                        difference = j;
+                                    }
+                                    if (differenceCount == 1)
+                                    {
+
+                                        for (int x = 0; x < list[y].conditions.Count; x++)
+                                        {
+                                            if (x == difference)
+                                            {
+                                                consolidateRule.conditions[difference] = "-";
+                                            }
+                                            else
+                                            {
+                                                consolidateRule.conditions[x] = list[y].conditions[x];
+                                            }
+                                        }
+                                    }
+
+                                    if (!consolidatedRules.Contains(consolidateRule))
+                                        consolidatedRules.Add(consolidateRule);
+                                }
+                            }
+                        }
+                    }  
+                }
+                
+            }
+            
+            return consolidatedRules;
+        }
+    }
+}
+                    
+            /*for (int i = 0; i < rule1.actions.Count; i++)
             {
                 if (rule1.actions[i] == rule2.actions[i] && rule1.actions[i] != "")
                 {
@@ -68,13 +124,28 @@ namespace DeTaCo
                             differenceCount++;
                             difference = j;
                         }
-                        if (differenceCount == 1)
-                        {
-                            Console.WriteLine(differenceCount + " " + difference);
-                        }   
+                         
                     }
+                    if (differenceCount == 1)
+                    {
+                        rule return_rule = new rule();
+                        for (int i = 0; i < rule1.conditions.Count; i++)
+                        {
+                            if (i == difference)
+                            {
+                                return_rule.conditions[difference] = "-";
+                            }
+                            else
+                            {
+                                return_rule.conditions[i] = rule1.conditions[i];
+                            }
+                        }
+                        return_rule.actions = rule1.actions;
+                        return return_rule;
+                    }
+                    else
+                        return rule1;
                 }
-            }
-        }
-    }
-}
+                else
+                        return rule1;
+            }*/
