@@ -12,12 +12,12 @@ namespace DeTaCo
         static void Main(string[] args)
         {
             //*.csv spaltenweise einlesen
-            string inputFile = args[0];
-            string outputFile = args[1];
-
+            string inputFile = @"C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\Test3.csv";
+            string outputFile = @"C:\Users\simon\Desktop\Test3-cons.csv";
+            List<rule> rules = new List<rule>();
             using (StreamReader reader = new StreamReader(File.OpenRead(inputFile)))
             {
-                List<rule> rules = new List<rule>();
+
                 while (!reader.EndOfStream)
                 {
 
@@ -50,7 +50,7 @@ namespace DeTaCo
 
             //Liste konsolidieren
             List<rule> consolidated = Consolidate(rules);
-
+            
             //neues *.csv schreiben
             using (StreamWriter file = new StreamWriter(outputFile))
             {
@@ -76,59 +76,76 @@ namespace DeTaCo
                     file.Write(Environment.NewLine);
                 }
             }
+            Console.ReadLine();
         }
 
         public static List<rule> Consolidate(List<rule> list)
         {
             //leere Ausgabeliste erzeugen
-            List<rule> consolidatedRules = new List<rule>(); 
-            
+            List<rule> consolidatedRules = new List<rule>();
+            List<rule> consolidated = new List<rule>();
             for (int y = 0; y < list.Count; y++)                //
             {                                                   //Jede Regel mit jeder Regel
-                for (int z = y + 1; z < list.Count ; z++)       //
+                for (int z = y + 1; z < list.Count; z++)       //
                 {
-                    //Neue konsolidierte Ausgaberegel mit gleicher Anzahl an Bedingungen und Aktionen
-                    rule consolidateRule = list[y];
-                        
-                    for (int i = 0; i < list[0].actions.Count; i++) //Alle Aktionen vergleichen
+                    if (!consolidated.Contains(list[y]) || consolidated.Contains(list[z]))
                     {
-                        if (list[y].actions[i] == list[z].actions[i] && list[y].actions[i] != "") //überprüfen ob Aktionen gleich/nicht leer sind
+                        //Neue konsolidierte Ausgaberegel mit gleicher Anzahl an Bedingungen und Aktionen
+                        Console.WriteLine(list[y].name + " mit " + list[z].name);
+                        rule consolidateRule = new rule();
+                        consolidateRule.conditions = list[y].conditions;
+                        consolidateRule.actions = list[y].actions;
+                        consolidateRule.name = list[y].name;
+                        for (int i = 0; i < list[0].actions.Count; i++) //Alle Aktionen vergleichen
                         {
-                            int differenceCount = 0;
-                            int difference = 0;
-                            for (int j = 0; j < list[0].conditions.Count; j++) //alle Bedingungen auf Gleichheit überprüfen
+                            if (list[y].actions[i] == list[z].actions[i] && list[y].actions[i] != "") //überprüfen ob Aktionen gleich/nicht leer sind
                             {
-                                if (!list[y].conditions[j].Equals(list[z].conditions[j]))
-                                {
-                                    differenceCount++;
-                                    difference = j;
-                                }
-                                if (differenceCount == 1)
+
+                                List<int> difference = new List<int>();
+                                for (int j = 0; j < list[0].conditions.Count; j++) //alle Bedingungen auf Gleichheit überprüfen
                                 {
 
-                                    for (int x = 0; x < list[y].conditions.Count; x++) //neue Bedingungsparameter (J/N/-) einfügen
+                                    if (!list[y].conditions[j].Equals(list[z].conditions[j]))
                                     {
-                                        if (x == difference)
-                                        {
-                                            consolidateRule.conditions[difference] = "-"; 
-                                        }
-                                        else
-                                        {
-                                            consolidateRule.conditions[x] = list[y].conditions[x];
-                                        }
+                                        difference.Add(j);
                                     }
-                                }
 
-                                if (!consolidatedRules.Contains(consolidateRule)) //Konsolidierte Regeln zur Ausgabeliste hinzufügen
-                                    consolidatedRules.Add(consolidateRule);
+                                }
+                                Console.WriteLine(difference.Count);
+                                if (difference.Count == 1)
+                                {
+                                    consolidateRule.conditions[difference[0]] = "-";
+
+                                    if (!consolidatedRules.Contains(consolidateRule))
+                                    { //Konsolidierte Regeln zur Ausgabeliste hinzufügen
+                                        consolidateRule.name = list[y].name + "/" + list[z].name;
+                                        consolidatedRules.Add(consolidateRule);
+                                    }
+                                    consolidated.Add(list[y]);
+                                    consolidated.Add(list[z]);
+                                }
                             }
                         }
-                    }  
+                        
+                        
+                    }
+
+
                 }
                 
             }
-            
+            foreach (rule rule in list)
+            {
+                if (!consolidated.Contains(rule))
+                {
+                    if (!consolidatedRules.Contains(rule))
+                    { //Konsolidierte Regeln zur Ausgabeliste hinzufügen
+                        consolidatedRules.Add(rule);
+                    }
+                }
+            }
             return consolidatedRules; //Liste zurückgeben
         }
     }
 }
+

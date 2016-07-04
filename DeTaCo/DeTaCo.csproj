@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Test3.csv" />
+    <None Include="Test4.csv" />
+    <None Include="Test5.csv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="test.csv" />
