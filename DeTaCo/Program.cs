@@ -9,8 +9,8 @@ namespace DeTaCo
         static void Main(string[] args)
         {
             //*.csv spaltenweise einlesen
-            string inputFile = @"C:\Users\simon\Documents\workspace\DeTaCo\DeTaCo\Test3.csv";
-            string outputFile = @"C:\Users\simon\Desktop\Test3-cons.csv";
+            string inputFile = args[0];
+            string outputFile = args[1];
             List<rule> rules = new List<rule>();
             using (StreamReader reader = new StreamReader(File.OpenRead(inputFile)))
             {
