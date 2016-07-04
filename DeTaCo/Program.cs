@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DeTaCo
 {
@@ -144,7 +141,11 @@ namespace DeTaCo
                     }
                 }
             }
-            return consolidatedRules; //Liste zurückgeben
+            if(consolidated.Count == 0)
+            {
+                return consolidatedRules; //Liste zurückgeben
+            }
+            return Consolidate(consolidatedRules);
         }
     }
 }
