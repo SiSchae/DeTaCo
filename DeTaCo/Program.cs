@@ -93,9 +93,15 @@ namespace DeTaCo
                         consolidateRule.conditions = list[y].conditions;
                         consolidateRule.actions = list[y].actions;
                         consolidateRule.name = list[y].name;
-                        for (int i = 0; i < list[0].actions.Count; i++) //Alle Aktionen vergleichen
+                        int actionsEqualityCount = 0;
+                        for (int i = 0; i < list[y].actions.Count; i++)
                         {
-                            if (list[y].actions[i] == list[z].actions[i] && list[y].actions[i] != "") //überprüfen ob Aktionen gleich/nicht leer sind
+                            if(list[y].actions[i] == list[z].actions[i])
+                            {
+                                actionsEqualityCount++;
+                            }
+                        }
+                            if (list[y].actions.Count == actionsEqualityCount) //überprüfen ob Aktionen gleich/nicht leer sind
                             {
 
                                 List<int> difference = new List<int>();
@@ -122,15 +128,9 @@ namespace DeTaCo
                                     consolidated.Add(list[z]);
                                 }
                             }
-                        }
-                        
-                        
+                        }                        
                     }
-
-
-                }
-                
-            }
+                }         
             foreach (rule rule in list)
             {
                 if (!consolidated.Contains(rule))
@@ -141,6 +141,7 @@ namespace DeTaCo
                     }
                 }
             }
+            consolidatedRules.Sort(new RuleComparer());
             if(consolidated.Count == 0)
             {
                 return consolidatedRules; //Liste zurückgeben

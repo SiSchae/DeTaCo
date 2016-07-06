@@ -46,9 +46,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="rule.cs" />
+    <Compile Include="RuleComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="sa_teil1.csv" />
     <None Include="Test3.csv" />
     <None Include="Test4.csv" />
     <None Include="Test5.csv" />
